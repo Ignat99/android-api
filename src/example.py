@@ -12,17 +12,36 @@ db_service = ClaroflexDbService()
 type_defs = gql("""
     type Query {
         projects: [Project!]!
+        users: [User!]!
     }
+
+    type User {
+        first_name: String
+        last_name: String
+        username: String
+        creator_id: Int
+        fullName: String
+    }
+
 
     type Project {
         name: String
         product: String
         bars_length: Int
-        fullName: String
     }
 """)
 
 query = QueryType()
+
+@query.field("users")
+def resolve_projects(*_):
+    users = db_service.get_users_list()
+    for user in users:
+        first_name = user.first_name
+        print("User First Name: %s, " % first_name)
+    return users
+
+
 
 @query.field("projects")
 def resolve_projects(*_):
@@ -38,13 +57,14 @@ def resolve_projects(*_):
 #        {"firstName": "Bob", "lastName": "Boberson", "age": 24},
 #    ]
 
+user = ObjectType("User")
 project = ObjectType("Project")
 
-@project.field("fullName")
-def resolve_project_fullname(project, *_):
-    return "%s %s" % (project["name"], project["product"])
+@user.field("fullName")
+def resolve_user_fullname(project, *_):
+    return "%s %s" % (user["first_name"], user["last_name"])
 
-schema = make_executable_schema(type_defs, query, project)
+schema = make_executable_schema(type_defs, query, user, project)
 
 app = GraphQL(schema, debug=True)
 

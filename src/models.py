@@ -7,6 +7,26 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 metadata = Base.metadata
 
+class AccountsUser(Base):
+    __tablename__ = 'accounts_user'
+
+    id = Column(INTEGER(11), primary_key=True, index=True)
+    password = Column(VARCHAR(128))
+    last_login = Column(DateTime, nullable=False)
+    is_superuser = Column(TINYINT(1))
+    username = Column(VARCHAR(150))
+    first_name = Column(VARCHAR(30))
+    last_name = Column(VARCHAR(30))
+    email = Column(VARCHAR(254))
+    is_staff = Column(TINYINT(1))
+    date_joined = Column(DateTime, nullable=False)
+    phone = Column(VARCHAR(30))
+    is_active = Column(TINYINT(1))
+    creator_id = Column(INTEGER(11))
+    accept_privacy_policy = Column(DateTime, nullable=False)
+    consume_tapeta_2020 = Column(TINYINT(1))
+
+
 
 class ProjectsProject(Base):
     __tablename__ = 'projects_project'

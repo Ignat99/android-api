@@ -12,7 +12,7 @@ import mysql.connector
 from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from src.models import ProjectsProject, declarative_base
+from src.models import AccountsUser, ProjectsProject, declarative_base
 
 
 
@@ -26,13 +26,13 @@ class ClaroflexDbService:
             DB_USERNAME = os.environ["DB_USERNAME"]
         except KeyError:
             print("Setup environment DB_USERNAME")
-            DB_USERNAME = "test"
+            DB_USERNAME = "djan_claroflex"
 
         try:
             DB_PASSWORD = os.environ["DB_PASSWORD"]
         except KeyError:
             print("Setup environment DB_PASSWORD")
-            DB_PASSWORD = "test"
+            DB_PASSWORD = "7njc4m4mYwmPI4LG"
 
         try:
             DB_HOST = os.environ["DB_HOST"]
@@ -44,7 +44,7 @@ class ClaroflexDbService:
             DB_NAME = os.environ["DB_NAME"]
         except KeyError:
             print("Setup environment DB_NAME")
-            DB_NAME = "test"
+            DB_NAME = "claroflex_v02"
 
 
         try:
@@ -57,6 +57,12 @@ class ClaroflexDbService:
 
         except mysql.connector.Error as err:
             print("Error of insert data on table: {}".format(err))
+
+
+    def get_users_list(self):
+        users = self.db_session.query(AccountsUser).all()
+        return users
+
 
     def get_projects_list_by_creator_id(self, creator_id):
         projects = self.db_session.query(ProjectsProject).filter(ProjectsProject.creator_id == creator_id).all()
