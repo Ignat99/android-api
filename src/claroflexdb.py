@@ -12,7 +12,7 @@ import mysql.connector
 from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from src.models import AccountsUser, ProjectsProject, declarative_base
+from src.models import ComponentsComponent, ProjectsProjectcomponent, AccountsUser, ProjectsProject, declarative_base
 
 
 
@@ -69,9 +69,16 @@ class ClaroflexDbService:
         return projects
 
     def get_components_list_by_project_id(self, project_id):
-        components = self.db_session.query(ProjectsProjectcomponent).filter(ProjectsProjectcomponent.project_id == project_id)\
-            .join(ComponentsComponent, and_(ComponentsComponent.is_alctive == 1, ProjectsProjectcomponent.component_id == ComponentsComponent.id)).all()
+        components = self.db_session.query(ProjectsProjectcomponent).filter(ProjectsProjectcomponent.project_id == project_id).all()
+#            .join(ComponentsComponent, and_(ProjectsProjectcomponent.component_id == ComponentsComponent.id)).all()
         return components
+
+#    def get_components_list_by_project_id(self, project_id):
+#        components = self.db_session.query(ProjectsProjectcomponent).filter(ProjectsProjectcomponent.project_id == project_id)\
+#            .join(ComponentsComponent, and_(ComponentsComponent.is_active == 1, ProjectsProjectcomponent.component_id == ComponentsComponent.id)).all()
+#        return components
+
+
 
 #    def set_tweets_read_status(self, user_alert_id):
 #        updated_records_count = self.db_session.query(TweetsList).filter(TweetsList.user_alert_id == user_alert_id) \
@@ -196,7 +203,7 @@ class ClaroflexDbService:
 #                                                 str(notificatione))
 #        return user_alerts_id
 
-    def get_components_list_by_project_id(self, project_id):
+    def get_components_list_by_project_id1(self, project_id):
         sql18 = "SELECT component_id FROM projects_projectcomponent WHERE project_id = \'" + project_id + "\';"
         my_cur = self.get_cursor_for_query(sql18)
         if my_cur == "":

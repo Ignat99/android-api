@@ -13,7 +13,13 @@ type_defs = gql("""
     type Query {
         projects(creator_id: Int = 1): [Project!]!
         users: [User!]!
-        components(project_id: Int = 1): [Component!]!
+        components(project_id: Int = 1): [Projectcomponent!]!
+    }
+
+    type Projectcomponent {
+        id: ID!
+        component_id: Int
+        project_id: Int
     }
 
     type Component {
@@ -47,8 +53,17 @@ type_defs = gql("""
 
 query = QueryType()
 
+@query.field("components")
+def resolve_components(*_, project_id):
+    components = db_service.get_components_list_by_project_id(project_id)
+    for component_c in components:
+#        code = component_c.code
+        print("Component code: %d " % component_c.component_id)
+    return components
+
+
 @query.field("users")
-def resolve_projects(*_):
+def resolve_users(*_):
     users = db_service.get_users_list()
     for user_c in users:
         first_name = user_c.first_name
