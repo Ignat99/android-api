@@ -60,7 +60,7 @@ class ClaroflexDbService:
 
 
     def get_users_list(self):
-        users = self.db_session.query(AccountsUser).all()
+        users = self.db_session.query(AccountsUser).filter(AccountsUser.is_active == 1).all()
         return users
 
 
@@ -68,11 +68,10 @@ class ClaroflexDbService:
         projects = self.db_session.query(ProjectsProject).filter(ProjectsProject.creator_id == creator_id).all()
         return projects
 
-#    def get_tweets_lists_for_active_user_alerts(self, project_id, alert_id):
-        # TODO: check if simplifying of the following query is possible
-#        tweets = self.db_session.query(TweetsList).filter(TweetsList.user_alert_id == alert_id)\
-#            .join(UserAlert, and_(UserAlert.alctive == 1, UserAlert.project_id == project_id, UserAlert.user_alerts_id == TweetsList.user_alert_id)).all()
-#        return tweets
+    def get_components_list_by_project_id(self, project_id):
+        components = self.db_session.query(ProjectsProjectcomponent).filter(ProjectsProjectcomponent.project_id == project_id)\
+            .join(ComponentsComponent, and_(ComponentsComponent.is_alctive == 1, ProjectsProjectcomponent.component_id == ComponentsComponent.id)).all()
+        return components
 
 #    def set_tweets_read_status(self, user_alert_id):
 #        updated_records_count = self.db_session.query(TweetsList).filter(TweetsList.user_alert_id == user_alert_id) \
