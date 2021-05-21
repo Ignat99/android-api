@@ -73,7 +73,7 @@ class ComponentsComponent(Base):
     id = Column(INTEGER(11), primary_key=True, index=True)
     category = Column(VARCHAR(50))
     code = Column(VARCHAR(50), unique=True)
-    compoosition = Column(VARCHAR(50))
+    composition = Column(VARCHAR(50))
     description = Column(LONGTEXT)
     image = Column(VARCHAR(100))
     measure_unit = Column(VARCHAR(50))

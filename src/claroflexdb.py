@@ -26,13 +26,13 @@ class ClaroflexDbService:
             DB_USERNAME = os.environ["DB_USERNAME"]
         except KeyError:
             print("Setup environment DB_USERNAME")
-            DB_USERNAME = "djan_claroflex"
+            DB_USERNAME = "test"
 
         try:
             DB_PASSWORD = os.environ["DB_PASSWORD"]
         except KeyError:
             print("Setup environment DB_PASSWORD")
-            DB_PASSWORD = "7njc4m4mYwmPI4LG"
+            DB_PASSWORD = "test"
 
         try:
             DB_HOST = os.environ["DB_HOST"]
@@ -44,7 +44,7 @@ class ClaroflexDbService:
             DB_NAME = os.environ["DB_NAME"]
         except KeyError:
             print("Setup environment DB_NAME")
-            DB_NAME = "claroflex_v02"
+            DB_NAME = "test"
 
 
         try:
@@ -68,10 +68,16 @@ class ClaroflexDbService:
         projects = self.db_session.query(ProjectsProject).filter(ProjectsProject.creator_id == creator_id).all()
         return projects
 
-    def get_components_list_by_project_id(self, project_id):
-        components = self.db_session.query(ProjectsProjectcomponent).filter(ProjectsProjectcomponent.project_id == project_id).all()
-#            .join(ComponentsComponent, and_(ProjectsProjectcomponent.component_id == ComponentsComponent.id)).all()
+    def get_componentids_list_by_project_id(self, project_id):
+        components = self.db_session.query(ProjectsProjectcomponent).filter(ProjectsProjectcomponent.project_id == project_id)\
+            .join(ComponentsComponent, and_(ProjectsProjectcomponent.component_id == ComponentsComponent.id)).all()
         return components
+
+    def get_component_by_component_id(self, component_id):
+        component = self.db_session.query(ComponentsComponent).filter(ComponentsComponent.id == component_id).all()
+#            .join(ComponentsComponent, and_(ProjectsProjectcomponent.component_id == ComponentsComponent.id)).all()
+        return component
+
 
 #    def get_components_list_by_project_id(self, project_id):
 #        components = self.db_session.query(ProjectsProjectcomponent).filter(ProjectsProjectcomponent.project_id == project_id)\

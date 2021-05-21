@@ -13,13 +13,15 @@ type_defs = gql("""
     type Query {
         projects(creator_id: Int = 1): [Project!]!
         users: [User!]!
-        components(project_id: Int = 1): [Projectcomponent!]!
+        componentids (project_id: Int = 1): [Projectcomponent!]!
+        component (component_id: Int = 1): [Component!]!
     }
 
     type Projectcomponent {
         id: ID!
         component_id: Int
         project_id: Int
+        product: String
     }
 
     type Component {
@@ -53,9 +55,19 @@ type_defs = gql("""
 
 query = QueryType()
 
-@query.field("components")
-def resolve_components(*_, project_id):
-    components = db_service.get_components_list_by_project_id(project_id)
+@query.field("component")
+def resolve_component(*_, component_id):
+    components = db_service.get_component_by_component_id(component_id)
+#    for component_c in components:
+#        code = component_c.code
+#        print("Component code: %d " % component_c.component_id)
+    return components
+
+
+
+@query.field("componentids")
+def resolve_componentsids(*_, project_id):
+    components = db_service.get_componentids_list_by_project_id(project_id)
     for component_c in components:
 #        code = component_c.code
         print("Component code: %d " % component_c.component_id)
